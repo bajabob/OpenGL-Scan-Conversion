@@ -1,0 +1,8 @@
+.DS_Store
+*.out
+*.o
+main
+.cproject
+.settings/
+.buildpath
+.project
