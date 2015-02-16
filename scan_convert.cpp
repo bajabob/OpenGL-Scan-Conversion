@@ -9,6 +9,8 @@
 #include <GL/glut.h>
 #endif
 
+#include "polygon_manager.h"
+
 /******************************************************************
  Notes:
  Image size is 400 by 400 by default.  You may adjust this if
@@ -32,9 +34,7 @@
 
 float framebuffer[ImageH][ImageW][3];
 
-struct color {
-	float r, g, b;		// Color (R,G,B values)
-};
+PolygonManager polygon_manager;
 
 // Draws the scene
 void drawit( void ) {
@@ -88,10 +88,26 @@ void display( void ) {
 	//The next two lines of code are for demonstration only.
 	//They show how to draw a line from (0,0) to (100,100)
 	int i;
-	for ( i = 0; i <= 100; i++ )
-		setFramebuffer( i, i, 0.0, 0.0, 1.0 );
+	//for ( i = 0; i <= 100; i++ )
+		//setFramebuffer( i, i, 0.0, 0.0, 1.0 );
+
+	polygon_manager.add_points( framebuffer );
 
 	drawit();
+}
+
+void onMouse( int button, int state, int x, int y ) {
+	if ( state == GLUT_DOWN ) {
+		if ( button == GLUT_LEFT_BUTTON ) {
+			polygon_manager.add_point( x, y );
+		}
+
+		if ( button == GLUT_RIGHT_BUTTON ) {
+			polygon_manager.add_final_point( x, y );
+		}
+		cout << polygon_manager;
+		glutPostRedisplay();
+	}
 }
 
 void init( void ) {
@@ -105,6 +121,7 @@ int main( int argc, char** argv ) {
 	glutInitWindowPosition( 100, 100 );
 	glutCreateWindow( "Robert Timm - Homework 3" );
 	init();
+	glutMouseFunc( onMouse );
 	glutDisplayFunc( display );
 	glutMainLoop();
 	return 0;
