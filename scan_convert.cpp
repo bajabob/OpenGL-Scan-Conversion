@@ -9,6 +9,7 @@
 #include <GL/glut.h>
 #endif
 
+#include "config.h"
 #include "polygon_manager.h"
 
 /******************************************************************
@@ -29,16 +30,13 @@
  setFramebuffer commands alone, though.
  *****************************************************************/
 
-#define ImageW 400
-#define ImageH 400
-
-float framebuffer[ImageH][ImageW][3];
+float framebuffer[HEIGHT][WIDTH][3];
 
 PolygonManager polygon_manager;
 
 // Draws the scene
 void drawit( void ) {
-	glDrawPixels( ImageW, ImageH, GL_RGB, GL_FLOAT, framebuffer );
+	glDrawPixels( HEIGHT, WIDTH, GL_RGB, GL_FLOAT, framebuffer );
 	glFlush();
 }
 
@@ -46,8 +44,8 @@ void drawit( void ) {
 void clearFramebuffer() {
 	int i, j;
 
-	for ( i = 0; i < ImageH; i++ ) {
-		for ( j = 0; j < ImageW; j++ ) {
+	for ( i = 0; i < HEIGHT; i++ ) {
+		for ( j = 0; j < WIDTH; j++ ) {
 			framebuffer[i][j][0] = 0.0;
 			framebuffer[i][j][1] = 0.0;
 			framebuffer[i][j][2] = 0.0;
@@ -60,7 +58,7 @@ void clearFramebuffer() {
 // those returned by the glutMouseFunc exactly - Scott Schaefer
 void setFramebuffer( int x, int y, float R, float G, float B ) {
 	// changes the origin from the lower-left corner to the upper-left corner
-	y = ImageH - 1 - y;
+	y = HEIGHT - 1 - y;
 	if ( R <= 1.0 )
 		if ( R >= 0.0 )
 			framebuffer[y][x][0] = R;
@@ -91,7 +89,7 @@ void display( void ) {
 	//for ( i = 0; i <= 100; i++ )
 		//setFramebuffer( i, i, 0.0, 0.0, 1.0 );
 
-	polygon_manager.add_points( framebuffer );
+	polygon_manager.draw_verticies( framebuffer );
 
 	drawit();
 }
@@ -117,7 +115,7 @@ void init( void ) {
 int main( int argc, char** argv ) {
 	glutInit( &argc, argv );
 	glutInitDisplayMode( GLUT_SINGLE | GLUT_RGB );
-	glutInitWindowSize( ImageW, ImageH );
+	glutInitWindowSize( WIDTH, HEIGHT );
 	glutInitWindowPosition( 100, 100 );
 	glutCreateWindow( "Robert Timm - Homework 3" );
 	init();

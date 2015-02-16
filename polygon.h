@@ -13,8 +13,7 @@
 
 #include "color.h"
 #include "point.h"
-
-const int MAX_POINTS = 10;
+#include "config.h"
 
 using namespace std;
 
@@ -44,18 +43,9 @@ public:
 		points.push_back( p );
 	}
 
-	void add_points( float (&framebuffer)[400][400][3] ) {
+	void draw_verticies( float (&framebuffer)[HEIGHT][WIDTH][3] ) {
 		for ( auto &point : points ) {
-			int y = 400 - 1 - point.get_y();
-			int x = point.get_x();
-		}
-		cout << "calling polygon add_points" << endl;
-		for ( int i = 0; i < 400; ++i ) {
-			for ( int j = 0; j < 400; ++j ) {
-				framebuffer[j][i][0] = 1.0;
-				framebuffer[j][i][1] = 1.0;
-				framebuffer[j][i][2] = 1.0;
-			}
+			color.draw(point, framebuffer);
 		}
 	}
 

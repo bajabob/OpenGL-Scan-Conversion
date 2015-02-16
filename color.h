@@ -5,15 +5,18 @@
 #include <cstdlib>
 #include <iostream>
 
+#include "point.h"
+#include "config.h"
+
 using namespace std;
 
-class Color{
+class Color {
 
 public:
 	double r, g, b;
 
-	Color(){
-		while(true){
+	Color() {
+		while (true) {
 			r = ((double) rand() / (RAND_MAX));
 			g = ((double) rand() / (RAND_MAX));
 			b = ((double) rand() / (RAND_MAX));
@@ -22,6 +25,14 @@ public:
 				break;
 			}
 		}
+	}
+
+	void draw( Point &point, float (&framebuffer)[HEIGHT][WIDTH][3] ) {
+		int y = point.get_translated_y();
+		int x = point.get_x();
+		framebuffer[y][x][0] = r;
+		framebuffer[y][x][1] = g;
+		framebuffer[y][x][2] = b;
 	}
 
 	friend ostream& operator<<( ostream& os, const Color& c ) {

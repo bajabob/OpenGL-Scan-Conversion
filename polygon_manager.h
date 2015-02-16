@@ -7,9 +7,8 @@
 
 #include "point.h"
 #include "color.h"
+#include "config.h"
 #include "polygon.h"
-
-const int MAX_POLYGONS = 10;
 
 using namespace std;
 
@@ -50,10 +49,9 @@ public:
 		polygons.back().add_point( x, y );
 	}
 
-	void add_points( float (&framebuffer)[400][400][3] ) {
-		cout << "size: " << polygons.size() << endl;
+	void draw_verticies( float (&framebuffer)[HEIGHT][WIDTH][3] ) {
 		for ( int i = 0; i < polygons.size(); ++i ) {
-			polygons[i].add_points( framebuffer );
+			polygons[i].draw_verticies( framebuffer );
 		}
 	}
 

@@ -4,6 +4,8 @@
 #include <string>
 #include <iostream>
 
+#include "config.h"
+
 using namespace std;
 
 class Point {
@@ -18,6 +20,10 @@ public:
 
 	int get_y() {
 		return this->y;
+	}
+
+	int get_translated_y(){
+		return HEIGHT - 1 - y;
 	}
 
 	friend ostream& operator<<( ostream& os, const Point& p ) {
