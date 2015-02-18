@@ -11,19 +11,15 @@ using namespace std;
 class Point {
 public:
 	Point( int x, int y ) :
-			x( x ), y( y ) {
+			x( x ), y(HEIGHT - 1 - y ) {
 	}
 
 	int get_x() {
 		return this->x;
 	}
 
-	int get_y() {
-		return this->y;
-	}
-
-	int get_translated_y(){
-		return HEIGHT - 1 - y;
+	int get_y(){
+		return y;
 	}
 
 	friend ostream& operator<<( ostream& os, const Point& p ) {

@@ -46,13 +46,29 @@ public:
 			return;
 		}
 		create_new_poly = true;
-		polygons.back().add_point( x, y );
+		polygons.back().add_final_point( x, y );
 	}
 
 	void draw_verticies( float (&framebuffer)[HEIGHT][WIDTH][3] ) {
 		for ( int i = 0; i < polygons.size(); ++i ) {
 			polygons[i].draw_verticies( framebuffer );
 		}
+	}
+
+	void draw_fill( float (&framebuffer)[HEIGHT][WIDTH][3] ) {
+
+		// fill the buffer
+		for ( int y = 0; y < HEIGHT; ++y ) {
+			for ( int i = 0; i < polygons.size(); ++i ) {
+				polygons[i].draw_fill( y, framebuffer );
+			}
+		}
+
+		// cleanup any leftover elements in the edge list
+		for ( int i = 0; i < polygons.size(); ++i ) {
+			polygons[i].clear_active_edge_list();
+		}
+
 	}
 
 	friend ostream& operator<<( ostream& os, const PolygonManager& pm ) {

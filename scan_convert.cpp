@@ -83,13 +83,10 @@ void setFramebuffer( int x, int y, float R, float G, float B ) {
 }
 
 void display( void ) {
-	//The next two lines of code are for demonstration only.
-	//They show how to draw a line from (0,0) to (100,100)
-	int i;
-	//for ( i = 0; i <= 100; i++ )
-		//setFramebuffer( i, i, 0.0, 0.0, 1.0 );
 
 	polygon_manager.draw_verticies( framebuffer );
+
+	polygon_manager.draw_fill( framebuffer );
 
 	drawit();
 }
@@ -103,7 +100,7 @@ void onMouse( int button, int state, int x, int y ) {
 		if ( button == GLUT_RIGHT_BUTTON ) {
 			polygon_manager.add_final_point( x, y );
 		}
-		cout << polygon_manager;
+
 		glutPostRedisplay();
 	}
 }

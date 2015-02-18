@@ -28,8 +28,14 @@ public:
 	}
 
 	void draw( Point &point, float (&framebuffer)[HEIGHT][WIDTH][3] ) {
-		int y = point.get_translated_y();
+		int y = point.get_y();
 		int x = point.get_x();
+		framebuffer[y][x][0] = r;
+		framebuffer[y][x][1] = g;
+		framebuffer[y][x][2] = b;
+	}
+
+	void draw( int x, int y, float (&framebuffer)[HEIGHT][WIDTH][3] ) {
 		framebuffer[y][x][0] = r;
 		framebuffer[y][x][1] = g;
 		framebuffer[y][x][2] = b;
