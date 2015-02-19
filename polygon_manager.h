@@ -59,10 +59,8 @@ public:
 	void draw_fill( float (&framebuffer)[HEIGHT][WIDTH][3],
 			ClippingWindow &cw ) {
 
-		cout << "min y: "<<cw.get_min_y() << " max y:"<<cw.get_max_y() << endl;
-
 		// fill the buffer
-		for ( int y = cw.get_min_y(); y < cw.get_max_y(); ++y ) {
+		for ( int y = 0; y < HEIGHT; ++y ) {
 			for ( int i = 0; i < polygons.size(); ++i ) {
 				polygons[i].draw_fill( y, framebuffer, cw );
 			}

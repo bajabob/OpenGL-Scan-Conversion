@@ -7,4 +7,6 @@
 const int MAX_POINTS = 10;
 const int MAX_POLYGONS = 10;
 
+const bool IS_DEBUG = true;
+
 #endif

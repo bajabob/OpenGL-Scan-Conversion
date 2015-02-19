@@ -27,6 +27,8 @@ public:
 		}
 	}
 
+	Color(double r, double g, double b):r(r), g(g), b(b){}
+
 	void draw( Point &point, float (&framebuffer)[HEIGHT][WIDTH][3] ) {
 		int y = point.get_y();
 		int x = point.get_x();

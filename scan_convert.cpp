@@ -90,7 +90,9 @@ void setFramebuffer( int x, int y, float R, float G, float B ) {
 void display( void ) {
 	clearFramebuffer();
 
-	polygon_manager.draw_verticies( framebuffer );
+	if ( IS_DEBUG ) {
+		polygon_manager.draw_verticies( framebuffer );
+	}
 
 	polygon_manager.draw_fill( framebuffer, clipping_window );
 
@@ -109,8 +111,8 @@ void onMouse( int button, int state, int x, int y ) {
 			if ( button == GLUT_RIGHT_BUTTON ) {
 				polygon_manager.add_final_point( x, y );
 			}
-		}else{
-			clipping_window.set_start_points(x, y);
+		} else {
+			clipping_window.set_start_points( x, y );
 		}
 		glutPostRedisplay();
 	}
@@ -118,8 +120,8 @@ void onMouse( int button, int state, int x, int y ) {
 }
 
 void onMouseMove( int x, int y ) {
-	if(clipping_window.can_clip()){
-		clipping_window.set_end_points(x, y);
+	if ( clipping_window.can_clip() ) {
+		clipping_window.set_end_points( x, y );
 		glutPostRedisplay();
 	}
 }
@@ -132,7 +134,7 @@ void onKeyPress( unsigned char key, int x, int y ) {
 	switch ((char) key) {
 	case 'q':
 	case 27: // esc key
-		glutDestroyWindow (window);
+		glutDestroyWindow( window );
 		exit( 0 );
 	case 'c':
 		clipping_window.toggle_clip();
@@ -140,9 +142,8 @@ void onKeyPress( unsigned char key, int x, int y ) {
 		if ( clipping_window.can_clip() ) {
 			cout << "Click and drag on the screen to create a clipping window."
 					<< endl;
-		}else{
-			cout << "Clipping disabled, you may add more polygons."
-								<< endl;
+		} else {
+			cout << "Clipping disabled, you may add more polygons." << endl;
 		}
 		break;
 	default:
@@ -157,6 +158,9 @@ void init( void ) {
 }
 
 int main( int argc, char** argv ) {
+	if ( IS_DEBUG ) {
+		cout << "DEBUG MODE ENABLED" << endl;
+	}
 	glutInit( &argc, argv );
 	glutInitDisplayMode( GLUT_SINGLE | GLUT_RGB );
 	glutInitWindowSize( WIDTH, HEIGHT );

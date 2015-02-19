@@ -115,9 +115,13 @@ public:
 				max_x = cw.get_max_x();
 			}
 			for ( int x = min_x; x < max_x; ++x ) {
-				color.draw( x, y, framebuffer );
+				if ( cw.get_min_y() <= y && y <= cw.get_max_y() ) {
+					color.draw( x, y, framebuffer );
+				}
 			}
 		}
+
+		cw.draw(framebuffer);
 	}
 
 	friend ostream& operator<<( ostream& os, const Polygon& poly ) {
