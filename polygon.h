@@ -16,6 +16,7 @@
 #include "point.h"
 #include "config.h"
 #include "edge_table.h"
+#include "clipping_window.h"
 
 using namespace std;
 
@@ -75,7 +76,8 @@ public:
 		active_edge_list.clear();
 	}
 
-	void draw_fill( int y, float (&framebuffer)[HEIGHT][WIDTH][3] ) {
+	void draw_fill( int y, float (&framebuffer)[HEIGHT][WIDTH][3],
+			ClippingWindow &cw ) {
 
 		// check for any active edge additions
 		edge_table.push_active_edges( y, active_edge_list );
@@ -89,28 +91,33 @@ public:
 
 		for ( int i = 0; i < active_edge_list.size(); i += 2 ) {
 			int x_1 = active_edge_list[i].get_x_increment( y );
-			int x_2 = active_edge_list[i+1].get_x_increment( y );
+			int x_2 = active_edge_list[i + 1].get_x_increment( y );
 			int max_x = (x_1 >= x_2) ? x_1 : x_2;
 			int min_x = (x_1 <= x_2) ? x_1 : x_2;
-			if(max_x > WIDTH || max_x < 0 || min_x > WIDTH || min_x < 0){
+			if ( max_x > WIDTH || max_x < 0 || min_x > WIDTH || min_x < 0 ) {
 				cerr << "Out of window drawing bounds" << endl;
 				continue;
 			}
-			for(int x = min_x; x < max_x; ++x){
-				color.draw(x, y, framebuffer);
+			// nothing to draw (left side of clip)
+			if ( min_x < cw.get_min_x() && max_x < cw.get_min_x() ) {
+				continue;
+			}
+			// nothing to draw (right side of clip)
+			if ( min_x > cw.get_max_x() && max_x > cw.get_max_x() ) {
+				continue;
+			}
+			// trim left side of line (if needed)
+			if ( min_x < cw.get_min_x() && max_x > cw.get_min_x() ) {
+				min_x = cw.get_min_x();
+			}
+			// trim right side of line (if needed)
+			if ( max_x > cw.get_max_x() && min_x < cw.get_max_x() ) {
+				max_x = cw.get_max_x();
+			}
+			for ( int x = min_x; x < max_x; ++x ) {
+				color.draw( x, y, framebuffer );
 			}
 		}
-
-//		for ( int i = active_edge_list.size()-1; i >= 0; --i ) {
-//
-//			if ( active_edge_list[i].get_min_y() < y
-//					&& active_edge_list[i].get_max_y() > y ) {
-//				cout << "1: " << active_edge_list[i].get_x_increment( y )
-//						<< endl;
-//			}
-//
-//
-//		}
 	}
 
 	friend ostream& operator<<( ostream& os, const Polygon& poly ) {

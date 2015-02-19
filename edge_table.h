@@ -51,7 +51,7 @@ public:
 	}
 
 private:
-// y, edge associated with a given y
+	// y, edge associated with a given y
 	multimap<int, Edge> edge_table;
 
 };

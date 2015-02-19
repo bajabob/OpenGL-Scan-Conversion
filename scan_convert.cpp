@@ -11,6 +11,7 @@
 
 #include "config.h"
 #include "polygon_manager.h"
+#include "clipping_window.h"
 
 /******************************************************************
  Notes:
@@ -30,9 +31,13 @@
  setFramebuffer commands alone, though.
  *****************************************************************/
 
+int window;
+
 float framebuffer[HEIGHT][WIDTH][3];
 
 PolygonManager polygon_manager;
+
+ClippingWindow clipping_window;
 
 // Draws the scene
 void drawit( void ) {
@@ -83,26 +88,68 @@ void setFramebuffer( int x, int y, float R, float G, float B ) {
 }
 
 void display( void ) {
+	clearFramebuffer();
 
 	polygon_manager.draw_verticies( framebuffer );
 
-	polygon_manager.draw_fill( framebuffer );
+	polygon_manager.draw_fill( framebuffer, clipping_window );
 
 	drawit();
 }
 
 void onMouse( int button, int state, int x, int y ) {
 	if ( state == GLUT_DOWN ) {
-		if ( button == GLUT_LEFT_BUTTON ) {
-			polygon_manager.add_point( x, y );
-		}
 
-		if ( button == GLUT_RIGHT_BUTTON ) {
-			polygon_manager.add_final_point( x, y );
-		}
+		// can only add poly's if clipping is OFF
+		if ( !clipping_window.can_clip() ) {
+			if ( button == GLUT_LEFT_BUTTON ) {
+				polygon_manager.add_point( x, y );
+			}
 
+			if ( button == GLUT_RIGHT_BUTTON ) {
+				polygon_manager.add_final_point( x, y );
+			}
+		}else{
+			clipping_window.set_start_points(x, y);
+		}
 		glutPostRedisplay();
 	}
+
+}
+
+void onMouseMove( int x, int y ) {
+	if(clipping_window.can_clip()){
+		clipping_window.set_end_points(x, y);
+		glutPostRedisplay();
+	}
+}
+
+/**
+ * Callback that is registered to GLUT to handle all
+ *  keyboard events for this program
+ */
+void onKeyPress( unsigned char key, int x, int y ) {
+	switch ((char) key) {
+	case 'q':
+	case 27: // esc key
+		glutDestroyWindow (window);
+		exit( 0 );
+	case 'c':
+		clipping_window.toggle_clip();
+		clipping_window.reset();
+		if ( clipping_window.can_clip() ) {
+			cout << "Click and drag on the screen to create a clipping window."
+					<< endl;
+		}else{
+			cout << "Clipping disabled, you may add more polygons."
+								<< endl;
+		}
+		break;
+	default:
+		break;
+	}
+	glutPostRedisplay();
+	return;
 }
 
 void init( void ) {
@@ -114,9 +161,11 @@ int main( int argc, char** argv ) {
 	glutInitDisplayMode( GLUT_SINGLE | GLUT_RGB );
 	glutInitWindowSize( WIDTH, HEIGHT );
 	glutInitWindowPosition( 100, 100 );
-	glutCreateWindow( "Robert Timm - Homework 3" );
+	window = glutCreateWindow( "Robert Timm - Homework 3" );
 	init();
 	glutMouseFunc( onMouse );
+	glutMotionFunc( onMouseMove );
+	glutKeyboardFunc( onKeyPress );
 	glutDisplayFunc( display );
 	glutMainLoop();
 	return 0;
