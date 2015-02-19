@@ -67,9 +67,19 @@ public:
 	}
 
 	void draw_verticies( float (&framebuffer)[HEIGHT][WIDTH][3] ) {
-		for ( auto &point : points ) {
-			color.draw( point, framebuffer );
-		}
+		if(!is_constructed){
+			for ( auto &point : points ) {
+				color.draw( point.get_x()-1, point.get_y()-1, framebuffer);
+				color.draw( point.get_x()-1, point.get_y(), framebuffer);
+				color.draw( point.get_x(), point.get_y()-1, framebuffer);
+				color.draw( point.get_x()+1, point.get_y()+1, framebuffer);
+				color.draw( point.get_x()+1, point.get_y(), framebuffer);
+				color.draw( point.get_x(), point.get_y()+1, framebuffer);
+				color.draw( point.get_x()-1, point.get_y()+1, framebuffer);
+				color.draw( point.get_x()+1, point.get_y()-1, framebuffer);
+				color.draw( point, framebuffer );
+			}
+		}		
 	}
 
 	void clear_active_edge_list() {

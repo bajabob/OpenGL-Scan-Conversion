@@ -90,9 +90,7 @@ void setFramebuffer( int x, int y, float R, float G, float B ) {
 void display( void ) {
 	clearFramebuffer();
 
-	if ( IS_DEBUG ) {
-		polygon_manager.draw_verticies( framebuffer );
-	}
+	polygon_manager.draw_verticies( framebuffer );
 
 	polygon_manager.draw_fill( framebuffer, clipping_window );
 
