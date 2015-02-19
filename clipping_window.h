@@ -40,8 +40,9 @@ public:
 	}
 
 	void set_end_points( int x, int y ) {
-		end_x = x;
-		end_y = HEIGHT - 1 - y;
+		end_x = (x > 0 && x < WIDTH) ? x : end_x;
+		int new_y = HEIGHT - 1 - y;
+		end_y = (new_y > 0 && new_y < HEIGHT) ? new_y : end_y;
 	}
 
 	int get_min_y() {

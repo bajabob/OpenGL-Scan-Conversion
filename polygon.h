@@ -95,7 +95,10 @@ public:
 			int max_x = (x_1 >= x_2) ? x_1 : x_2;
 			int min_x = (x_1 <= x_2) ? x_1 : x_2;
 			if ( max_x > WIDTH || max_x < 0 || min_x > WIDTH || min_x < 0 ) {
-				cerr << "Out of window drawing bounds" << endl;
+				if ( IS_DEBUG ) {
+					cerr << "Out of window drawing bounds [x-min/x-max]("
+							<< min_x << ", " << max_x << ")" << endl;
+				}
 				continue;
 			}
 			// nothing to draw (left side of clip)
@@ -107,11 +110,11 @@ public:
 				continue;
 			}
 			// trim left side of line (if needed)
-			if ( min_x < cw.get_min_x() && max_x > cw.get_min_x() ) {
+			if ( min_x < cw.get_min_x()) {
 				min_x = cw.get_min_x();
 			}
 			// trim right side of line (if needed)
-			if ( max_x > cw.get_max_x() && min_x < cw.get_max_x() ) {
+			if ( max_x > cw.get_max_x()) {
 				max_x = cw.get_max_x();
 			}
 			for ( int x = min_x; x < max_x; ++x ) {
@@ -121,7 +124,7 @@ public:
 			}
 		}
 
-		cw.draw(framebuffer);
+		cw.draw( framebuffer );
 	}
 
 	friend ostream& operator<<( ostream& os, const Polygon& poly ) {
