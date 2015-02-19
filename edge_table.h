@@ -4,9 +4,11 @@
 #include <map>
 #include <vector>
 #include <iostream>
+#include <algorithm>
 
 #include "point.h"
 #include "config.h"
+#include "edge_sort.h"
 
 using namespace std;
 
@@ -37,6 +39,9 @@ public:
 				active_edge_list.push_back((*itr).second);
 				++itr;
 			}
+			// list has been changed,
+			// sort edges so that concave edges can be drawn
+			sort(active_edge_list.begin(), active_edge_list.end(), EdgeSort(y));
 		}
 	}
 
