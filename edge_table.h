@@ -30,7 +30,6 @@ public:
 	}
 
 	void push_active_edges( int y, vector<Edge> &active_edge_list ) {
-
 		int count = edge_table.count( y );
 		if ( count > 0 ) {
 			multimap<int, Edge>::const_iterator itr = edge_table.find(y);

@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <algorithm>
 
 #if defined(__APPLE__)
 #include <GLUT/glut.h>
@@ -15,6 +16,7 @@
 #include "color.h"
 #include "point.h"
 #include "config.h"
+#include "edge_sort.h"
 #include "edge_table.h"
 #include "clipping_window.h"
 
@@ -88,7 +90,7 @@ public:
 				active_edge_list.erase( active_edge_list.begin() + i );
 			}
 		}
-
+		sort(active_edge_list.begin(), active_edge_list.end(), EdgeSort(y));
 		for ( int i = 0; i < active_edge_list.size(); i += 2 ) {
 			int x_1 = active_edge_list[i].get_x_increment( y );
 			int x_2 = active_edge_list[i + 1].get_x_increment( y );
