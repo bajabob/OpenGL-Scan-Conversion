@@ -24,7 +24,9 @@ Received an A on this assignment. This implementation utilizes scissoring, which
 ## Screenshots
 
 Example of various polygons created by the user
+
 ![Polys](screenshot-polys.png)
 
 Example of the previous polygons clipped using the implementation of the scanline conversion algorithm
+
 ![Clipped polys](screenshot-clipped.png)
